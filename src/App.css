@@ -1,42 +1,141 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Layout: header on top, content fills the rest */
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+:root { --lift-up: 7vh; }
+
+/* optional: smaller lift on short screens */
+@media (max-height: 700px) {
+  :root { --lift-up: 4vh; }
+}
+
+/* Top, centered header */
+.siteHeader {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+/* Center the form area within the remaining space */
+.centerArea {
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  transform: translateY(calc(-1 * var(--lift-up)));
+}
+
+/* Title with black rectangle */
+.title {
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: 2px;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+/* Optional: center text */
+.subtitle { text-align: center; }
+.note { text-align: center; }
+
+/* Section */
+.content {
+  width: 100%;
+  max-width: 560px;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subtitle {
+  margin: 0 0 12px;
+  font-size: 24px;
   text-align: center;
+  color: #5b5b5b;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.note {
+  margin: 0 0 18px;
+  color: #d12b2b;
+  font-size: 14px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* File input styling (custom) */
+.hiddenFileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.fileInputRow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.card {
-  padding: 2em;
+.fileInputBox {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  width: 100%;
+  max-width: 560px;
+  border: 2px solid #5b79a6; /* soft blue like the mock */
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.fileButton {
+  background: #efefef;
+  border-right: 2px solid #5b79a6;
+  text-align: center;
+  padding: 10px 14px;
+  color: #444;
+}
+
+.fileInputBox:hover .fileButton {
+  background: #e7e7e7;
+}
+
+.fileName {
+  padding: 10px 12px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Upload button */
+.uploadBtn {
+  margin-top: 36px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: 2px solid #9b9b9b;
+  background: #f5f5f5;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.02s ease-in-out;
+}
+
+.uploadBtn:hover:enabled {
+  background: #ececec;
+}
+
+.uploadBtn:active:enabled {
+  transform: translateY(1px);
+}
+
+.uploadBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
