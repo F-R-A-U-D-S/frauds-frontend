@@ -49,8 +49,8 @@ export default function App() {
     <Layout>
       <main className="centerArea">
         <section className="content">
-          <h2 className="subtitle">Upload your transactions</h2>
-          <p className="note">(.csv format only)</p>
+          <h2 className="subtitle">Please Upload Your Transactions File</h2>
+          <p className="note">(Note: The file must be either CSV/Excel)</p>
 
           <div className="fileInputRow">
             <input
@@ -68,12 +68,7 @@ export default function App() {
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
-              style={{
-                transition: 'box-shadow 0.2s, border-color 0.2s',
-                boxShadow: dragActive ? '0 0 0 4px #4f8cff33' : undefined,
-                borderColor: dragActive ? '#4f8cff' : undefined,
-                cursor: 'pointer',
-              }}
+              
             >
               <span className="fileButton">Select file</span>
               <span className="fileName" title={fileName}>

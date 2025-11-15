@@ -1,0 +1,143 @@
+/* Center page */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fa;
+  font-family: "Inter", sans-serif;
+}
+
+/* Card styling */
+.login-card {
+  width: 400px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Form fields */
+.form label {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+.form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form input:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 4px rgba(0, 102, 255, 0.4);
+}
+
+/* Password field wrapper */
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.show-btn {
+  position: absolute;
+  right: 12px;
+  border: none;
+  background: none;
+  color: #0066ff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+/* Options row */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.forgot {
+  color: #0066ff;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+/* Login button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0057d9;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.login-btn:hover {
+  background: #0047b3;
+}
+
+/* Register text */
+.register-text {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-text a {
+  color: #0066ff;
+  font-weight: 500;
+  text-decoration: none;
+}
+.remember-container {
+  display: flex;
+  align-items: center; 
+  gap: 6px; /* spacing between checkbox & text */
+}
+.remember-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+.remember-container label {
+  font-size: 14px;
+  user-select: none; 
+}
+.forgot-link {
+  font-size: 14px;
+  color: #0066ff;
+  text-decoration: none;
+}
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+

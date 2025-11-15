@@ -92,6 +92,7 @@
   border: 2px solid #5b79a6; /* soft blue like the mock */
   border-radius: 6px;
   overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
   cursor: pointer;
 }
 
@@ -105,6 +106,11 @@
 
 .fileInputBox:hover .fileButton {
   background: #e7e7e7;
+}
+
+.fileInputBox.dragActive {
+  box-shadow: 0 0 0 4px #4f8cff33;
+  border-color: #4f8cff;
 }
 
 .fileName {
