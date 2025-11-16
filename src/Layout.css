@@ -1,5 +1,13 @@
 .headerRow {
-	position: relative;
+	font-size: 2rem;
+	font-weight: 700;
+	letter-spacing: 4px;
+	background: #000;
+	color: white;
+	padding: 10px 25px;
+	border-radius: 4px;
+	text-transform: uppercase;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Keep the site title visually centered */
