@@ -4,11 +4,11 @@ interface LoginResponse {
 
 const API_URL = "http://127.0.0.1:8000/auth";
 
-export const login = async (email: string, password: string): Promise<void> => {
+export const login = async (username: string, password: string): Promise<void> => {
   const response = await fetch(`${API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 
   if (!response.ok) {
@@ -19,11 +19,11 @@ export const login = async (email: string, password: string): Promise<void> => {
   localStorage.setItem("access_token", data.access_token); // store JWT or session access_token
 };
 
-export async function registerUser(email: string, password: string) {
-  const response = await fetch(`${API_URL}/register`, {
+export async function registerUser(username: string, password: string) {
+  const response = await fetch(`${API_URL}/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 
   if (!response.ok) {

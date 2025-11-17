@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../auth/AuthContext";
 
 
 const API_URL = "http://127.0.0.1:8000/auth";
 
 const Login: React.FC = () => {
+  const { login, isAuth } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -14,14 +16,19 @@ const Login: React.FC = () => {
 
   // Basic validation
   const validate = (): string | null => {
-    if (!email) return "Email is required.";
-    const re = /\S+@\S+\.\S+/;
-    if (!re.test(email)) return "Enter a valid email.";
+    if (!username) return "Username is required.";
     if (!password) return "Password is required.";
     if (password.length < 6) return "Password must be at least 6 characters.";
     return null;
   };
 
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/"); // navigate when isAuth becomes true
+    }
+  }, [isAuth, navigate]);
+
+  
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +45,7 @@ const Login: React.FC = () => {
       const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (!res.ok) {
@@ -47,9 +54,11 @@ const Login: React.FC = () => {
       }
 
       const data = await res.json();
-      if (data.access_token) localStorage.setItem("token", data.access_token);
-
-      navigate("/"); // go to App page after login
+      if (data.access_token) {
+        login(data.access_token);
+        
+      }
+      navigate("/"); 
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred.");
     } finally {
@@ -65,12 +74,12 @@ const Login: React.FC = () => {
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit} className="form">
-          <label>Email</label>
+          <label>Username</label>
           <input
             type="text"
-            placeholder="Enter Email or Employee ID"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <label>Password</label>
