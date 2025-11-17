@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react'
 import './App.css'
-import Layout from './Layout'
 
 export default function App() {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  const [message, setMessage] = useState<string | null>(null);
 
   // Upload logic
   const uploadFile = (f: File) => {
     // TODO: handle upload logic (e.g., send to API)
     alert(`Uploading: ${f.name}`)
+    setMessage(`File "${f.name}" uploaded successfully!`);
   }
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +78,8 @@ export default function App() {
         </div>
 
         {/* Upload button removed for auto-upload */}
+        {/* Notification message */}
+        {message && <div className="uploadMessage">{message}</div>}
       </section>
     </main>
   )
