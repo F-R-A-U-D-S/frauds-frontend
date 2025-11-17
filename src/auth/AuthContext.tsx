@@ -15,12 +15,15 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
+
 
   useEffect(() => {
-    setIsAuth(!!localStorage.getItem("token"));
+    localStorage.removeItem("token"); // remove any existing token
+    const token = localStorage.getItem("token");
+    setIsAuth(!!token);
   }, []);
-
+  
   const login = (token: string) => {
     localStorage.setItem("token", token);
     setIsAuth(true);
@@ -31,6 +34,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuth(false);
     window.location.href = "/login";
   };
+
+  if (isAuth === null) return <div>Loading...</div>;
 
   return (
     <AuthContext.Provider value={{ isAuth, login, logout }}>

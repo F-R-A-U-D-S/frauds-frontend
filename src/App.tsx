@@ -46,40 +46,38 @@ export default function App() {
   }
 
   return (
-    <Layout>
-      <main className="centerArea">
-        <section className="content">
-          <h2 className="subtitle">Please Upload Your Transactions File</h2>
-          <p className="note">(Note: The file must be either CSV/Excel)</p>
+    <main className="centerArea">
+      <section className="content">
+        <h2 className="subtitle">Please Upload Your Transactions File</h2>
+        <p className="note">(Note: The file must be either CSV/Excel)</p>
 
-          <div className="fileInputRow">
-            <input
-              ref={inputRef}
-              id="file-input"
-              type="file"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              onChange={onSelectFile}
-              className="hiddenFileInput"
-            />
-            <label
-              htmlFor="file-input"
-              className={`fileInputBox${dragActive ? ' dragActive' : ''}`}
-              aria-label="Select file"
-              onDragOver={onDragOver}
-              onDragLeave={onDragLeave}
-              onDrop={onDrop}
-              
-            >
-              <span className="fileButton">Select file</span>
-              <span className="fileName" title={fileName}>
-                {fileName}
-              </span>
-            </label>
-          </div>
+        <div className="fileInputRow">
+          <input
+            ref={inputRef}
+            id="file-input"
+            type="file"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            onChange={onSelectFile}
+            className="hiddenFileInput"
+          />
+          <label
+            htmlFor="file-input"
+            className={`fileInputBox${dragActive ? ' dragActive' : ''}`}
+            aria-label="Select file"
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            
+          >
+            <span className="fileButton">Select file</span>
+            <span className="fileName" title={fileName}>
+              {fileName}
+            </span>
+          </label>
+        </div>
 
-          {/* Upload button removed for auto-upload */}
-        </section>
-      </main>
-    </Layout>
+        {/* Upload button removed for auto-upload */}
+      </section>
+    </main>
   )
 }
