@@ -21,10 +21,20 @@
 
 /* Center the form area within the remaining space */
 .centerArea {
-  display: grid;
+  /* display: grid;
   place-items: center;
   padding: 16px;
-  transform: translateY(calc(-1 * var(--lift-up)));
+  transform: translateY(calc(-1 * var(--lift-up))); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f9fafb; /* subtle light background */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 2rem auto;
 }
 
 /* Title with black rectangle */
@@ -32,9 +42,11 @@
   margin: 0;
   font-size: 32px;
   letter-spacing: 2px;
-  background: #000;
-  color: #fff;
+  /* background: #000; */
+  color: #0d0d0d;
   padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Optional: center text */
@@ -54,8 +66,11 @@
 .subtitle {
   margin: 0 0 12px;
   font-size: 24px;
+  font-weight: 600;
   text-align: center;
-  color: #5b5b5b;
+  color: #333; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 .note {
@@ -102,6 +117,8 @@
   text-align: center;
   padding: 10px 14px;
   color: #444;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 .fileInputBox:hover .fileButton {
@@ -119,6 +136,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 /* Upload button */
@@ -144,4 +163,18 @@
 .uploadBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Upload message */
+.uploadMessage {
+  margin-top: 24px;
+  padding: 0.75rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  text-align: center;
+  animation: fadeInOut 3s forwards;
 }
