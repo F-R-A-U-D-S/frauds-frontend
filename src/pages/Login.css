@@ -1,11 +1,63 @@
 /* Center page */
 .login-container {
+  width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f7fa;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4f8cff 0%, #10b981 100%);
   font-family: "Inter", sans-serif;
+  padding: 30px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 15px;
+}
+
+.login-label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color: #4a5568;
+  margin-bottom: 5px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e0;
+  font-size: 15px;
+  margin-bottom: 20px;
+  transition: 0.2s ease-in-out;
+}
+
+.login-input:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.25);
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: #3182ce;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.login-button:hover {
+  background: #2b6cb0;
 }
 
 /* Card styling */
@@ -13,17 +65,39 @@
   width: 400px;
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
   border-radius: 16px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
 }
 
 /* Title */
 .title {
   font-size: 28px;
   font-weight: 700;
+  color: #1f2937;
   margin-bottom: 25px;
+}
+
+.login-card input[type="text"],
+.login-card input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0 1rem 0;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 2px rgba(79, 140, 255, 0.2);
 }
 
 /* Form fields */
@@ -37,16 +111,17 @@
 
 .form input {
   width: 100%;
-  padding: 12px;
+  padding: 12px 14px;
   margin-bottom: 18px;
   border: 1px solid #dcdcdc;
   border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  transition: 0.2s;
+  font-size: 16px;
+  transition: 0.2s ease-in-out;
+  
 }
 
 .form input:focus {
+  outline: none;
   border-color: #0066ff;
   box-shadow: 0 0 4px rgba(0, 102, 255, 0.4);
 }
@@ -60,13 +135,17 @@
 
 .show-btn {
   position: absolute;
-  right: 12px;
-  border: none;
+  right: 0.5rem;
   background: none;
-  color: #0066ff;
+  border: none;
+  color: #4f8cff;
   cursor: pointer;
-  font-size: 14px;
-  padding: 0;
+  font-weight: 600;
+  padding: 0.5rem;
+}
+
+.show-btn:hover {
+  text-decoration: underline;
 }
 
 /* Options row */
@@ -99,17 +178,20 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: all 0.2s ease-in-out;
+  margin-top: 1rem;
 }
 
 .login-btn:hover {
   background: #0047b3;
+
 }
 
 /* Register text */
 .register-text {
   margin-top: 20px;
   font-size: 14px;
+  color: #374151;
 }
 
 .register-text a {
@@ -117,6 +199,11 @@
   font-weight: 500;
   text-decoration: none;
 }
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
 .remember-container {
   display: flex;
   align-items: center; 
@@ -128,16 +215,27 @@
 }
 .remember-container label {
   font-size: 14px;
-  user-select: none; 
 }
 .forgot-link {
   font-size: 14px;
   color: #0066ff;
   text-decoration: none;
+  padding: 100px;
 }
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
 .error-message {
   color: red;
+  background-color: #fee2e2;
   margin-bottom: 10px;
   font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #fca5a5;
+
 }
 

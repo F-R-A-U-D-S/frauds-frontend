@@ -75,12 +75,15 @@ const Login: React.FC = () => {
         
         <form onSubmit={handleSubmit} className="form">
           <label>Username</label>
-          <input
-            type="text"
-            placeholder="Enter Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Enter Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          
 
           <label>Password</label>
           <div className="password-wrapper">
