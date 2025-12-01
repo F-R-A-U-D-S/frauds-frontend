@@ -4,6 +4,7 @@ import './pages/Login.css'
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./auth/PrivateRoute";
 import PublicRoute from "./auth/PublicRoute";
+import Schema from "./Schema";
 
 export default function Home() {
   return (
@@ -25,6 +26,16 @@ export default function Home() {
           </PrivateRoute>
         }
       />
+
+      <Route
+        path="/schema"
+        element={
+          <PrivateRoute>
+            <Schema />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
+

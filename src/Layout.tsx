@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Layout.css'
+import './Schema.tsx'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -64,6 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <a href="#upload" role="menuitem" className="drawerLink">Upload</a>
           <a href="#about" role="menuitem" className="drawerLink">About</a>
           <a href="#help" role="menuitem" className="drawerLink">Help</a>
+          <Link to="/schema" role="menuitem" className="drawerLink">Schema Mapping</Link>
         </nav>
       </aside>
 
