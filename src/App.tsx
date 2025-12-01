@@ -8,12 +8,49 @@ export default function App() {
   const [message, setMessage] = useState<string | null>(null);
 
   // Upload logic
-  const uploadFile = (f: File) => {
+  const uploadFile = async (f: File) => {
     // TODO: handle upload logic (e.g., send to API)
-    alert(`Uploading: ${f.name}`)
-    setMessage(`File "${f.name}" uploaded successfully!`);
-  }
+    const formdata = new FormData();
+    formdata.append('file', f);
 
+    // Simulate upload delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    try{
+      const response = await fetch('http://127.0.0.1:8000/upload/file/', {
+        method: 'POST',
+        body: formdata,
+      });
+      
+      const result = await response.json();
+
+      setMessage(result.message);
+
+      if (!response.ok) {
+        let errorMsg = result.message || 'Upload failed';
+
+        if (result.detail) {
+        if (typeof result.detail === "string") {
+          errorMsg = result.detail;
+        } else if (Array.isArray(result.detail)) {
+          errorMsg = result.detail.map((d: any) => d.msg).join("\n");
+        }
+      } else if (result.message) {
+        errorMsg = result.message;
+      }
+
+      setMessage(`❌ ${errorMsg}`);
+      setFile(null);
+      return;
+    }
+    // Success
+    setMessage(`✅ ${result.message}`);
+    console.log("Upload successful:", result);
+
+  } catch (error) {
+    setMessage("❌ Network error: Unable to upload file.");
+  }
+};
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] ?? null
     setFile(f)
@@ -44,6 +81,8 @@ export default function App() {
       setFile(f)
       uploadFile(f)
     }
+
+    
   }
 
   return (
@@ -77,9 +116,11 @@ export default function App() {
           </label>
         </div>
 
-        {/* Upload button removed for auto-upload */}
-        {/* Notification message */}
-        {message && <div className="uploadMessage">{message}</div>}
+        {message && (
+          <p className={message.includes("Invalid") ? "message-error" : "message-success"}>
+            {message}
+          </p>
+        )}
       </section>
     </main>
   )
