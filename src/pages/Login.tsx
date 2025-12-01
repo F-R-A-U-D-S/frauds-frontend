@@ -56,9 +56,8 @@ const Login: React.FC = () => {
       const data = await res.json();
       if (data.access_token) {
         login(data.access_token);
-        
+        navigate("/upload", {replace : true}); 
       }
-      navigate("/"); 
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred.");
     } finally {

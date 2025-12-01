@@ -1,6 +1,6 @@
-export default async function handleDownloadCsv(report_id: number) {
+export default async function handleDownloadCsv(key: string) {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/report/csv/${report_id}`, {
+    const response = await fetch(`http://127.0.0.1:8000/predict/download/${key}`, {
       method: "GET",
       headers: {
         "Accept": "text/csv",
@@ -11,12 +11,23 @@ export default async function handleDownloadCsv(report_id: number) {
       throw new Error("Failed to download CSV");
     }
 
-    const blob = await response.blob();                
-    const url = window.URL.createObjectURL(blob);       
+    // Get blob data
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
 
+    // Extract filename from backend header if present
+    const disposition = response.headers.get("Content-Disposition");
+    let filename = "flagged_results.csv";
+
+    if (disposition) {
+      const match = disposition.match(/filename="?([^"]+)"?/);
+      if (match) filename = match[1];
+    }
+
+    // Trigger download
     const link = document.createElement("a");
     link.href = url;
-    link.download = `fraud-report-${report_id}.csv`;                 
+    link.download = filename;
     link.click();
 
     window.URL.revokeObjectURL(url);
@@ -24,5 +35,3 @@ export default async function handleDownloadCsv(report_id: number) {
     console.error("CSV download error:", error);
   }
 }
-
-
