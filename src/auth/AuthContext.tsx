@@ -15,8 +15,9 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuth, setIsAuth] = useState<boolean | null>(null);
-
+  const [isAuth, setIsAuth] = useState<boolean | null>(() => {
+    return localStorage.getItem("token") ? true : false;
+  });
 
   useEffect(() => {
     localStorage.removeItem("token"); // remove any existing token
