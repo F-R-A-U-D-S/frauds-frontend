@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import PublicRoute from "./auth/PublicRoute";
 import PrivateRoute from "./auth/PrivateRoute";
-
+import './pages/Login.css'
 import Login from "./pages/Login";
 import UploadPage from "./pages/UploadPage";
 import DownloadPage from "./pages/DownloadPage";
-import Dashboard from "./pages/Dashboard";
+import Schema from "./Schema";
 
 export default function App() {
   return (
@@ -35,6 +35,15 @@ export default function App() {
         element={
           <PrivateRoute>
             <DownloadPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/schema"
+        element={
+          <PrivateRoute>
+            <Schema />
           </PrivateRoute>
         }
       />

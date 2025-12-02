@@ -12,43 +12,88 @@ const inputRef = useRef<HTMLInputElement | null>(null)
 const [file, setFile] = useState<File | null>(null)
 const [dragActive, setDragActive] = useState(false)
 const [message, setMessage] = useState<string | null>(null);
+const token = localStorage.getItem("token");
 
 // Upload logic
 const uploadFile = async (f: File) => {
-    const formData = new FormData();
-    formData.append("file", f);
+        const formData = new FormData();
+        formData.append("file", f);
 
-    const token = localStorage.getItem("token");
+        try {
+            const uploadRes = await fetch("http://127.0.0.1:8000/upload/file/", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            });
 
+            const result = await uploadRes.json();
+            
+
+
+            if (!uploadRes.ok) {
+                const errMsg =
+                    result.detail ||
+                    result.message ||
+                    "Upload failed";
+                setMessage(`❌ ${errMsg}`);
+                return null;
+            }
+
+            setMessage("✅ File uploaded. Running prediction...");
+            console.log("Upload result:", result);
+            return result.result_key;  
+        } catch (error) {
+            setMessage("❌ Network error while uploading file.");
+            return null;
+        }
+    };
+
+    
+    // Predict After Upload
+    const runPrediction = async (resultKey: string) => {
     try {
-    const res = await fetch("http://localhost:8000/predict/", {
-        method: "POST",
-        headers: {
-        Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-    });
+        const res = await fetch("http://localhost:8000/predict/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ input_key: resultKey }),
+        });
 
-    if (!res.ok) {
-        throw new Error("Upload failed");
-    }
+        if (!res.ok) {
+            throw new Error("Prediction failed");
+        }
 
-    const data = await res.json(); // { result_key: "..." }
+        const data = await res.json(); // { result_key: "..." }
 
-    setMessage("File uploaded. Processing started.");
-    console.log("Result key:", data.result_key);
-    navigate(`/download?key=${encodeURIComponent(data.result_key)}`);
+        setMessage("File uploaded. Processing started.");
+        console.log("Result key:", data.result_key); // For debugging
+        return data.result_key;
+        
+        
 
-    } catch (err) {
+    } 
+    catch (err) {
     console.error(err);
     setMessage("Failed to upload file.");
     }
-}
+};
 
-const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] ?? null
     setFile(f)
-    if (f) uploadFile(f)
+    if (f) {
+        const resultKey = await uploadFile(f);
+        if (resultKey) {
+            const flagged_key = await runPrediction(resultKey);
+            if (flagged_key) {
+            // Redirect to download page
+            navigate(`/download?key=${encodeURIComponent(flagged_key)}`);
+            }
+        }
+    }
 }
 
 const fileName = file?.name ?? 'FileName.csv'
@@ -66,17 +111,22 @@ const onDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
     setDragActive(false)
 }
 
-const onDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+const onDrop = async(e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
     const f = e.dataTransfer.files?.[0] ?? null
     if (f) {
-    setFile(f)
-    uploadFile(f)
+        setFile(f)
+        const resultKey = await uploadFile(f);
+        if (resultKey) {
+            const flagged_key = await runPrediction(resultKey);
+            if (flagged_key) {
+                navigate(`/download?key=${encodeURIComponent(flagged_key)}`);
+            }
+        }
     }
 }
-
 return (
         <Layout>
             <main className="centerArea">
