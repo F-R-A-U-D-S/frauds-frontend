@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import "./DownloadPage.css";
 import handleDownloadCsv from "../api/downloadCSV";
+import ReportPieChart from "../components/reportPieChart";
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
@@ -12,6 +13,9 @@ export default function DownloadPage() {
   return (
     <Layout>
       <div className="download-container">
+        <div>
+          <ReportPieChart keyValue={resultKey!}/>
+        </div>
         <div>
           <h3>The Fraud Report is ready to download.</h3>
         </div>
