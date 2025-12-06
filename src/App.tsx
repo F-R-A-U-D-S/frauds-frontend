@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import PublicRoute from "./auth/PublicRoute";
 import PrivateRoute from "./auth/PrivateRoute";
 import './pages/Login.css'
@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import UploadPage from "./pages/UploadPage";
 import DownloadPage from "./pages/DownloadPage";
 import Schema from "./Schema";
+import {AdminPage} from "./features/userManagement/AdminPage";
 
 export default function App() {
   return (
@@ -17,6 +18,14 @@ export default function App() {
           <PublicRoute>
             <Login />
           </PublicRoute>
+        }
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <PublicRoute>
+            <AdminPage /> 
+          </PublicRoute> 
         }
       />
 
