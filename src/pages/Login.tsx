@@ -55,8 +55,12 @@ const Login: React.FC = () => {
 
       const data = await res.json();
       if (data.access_token) {
-        login(data.access_token);
-        navigate("/upload", {replace : true}); 
+        login(data.access_token, data.is_admin);
+        if (data.is_admin) {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/upload", { replace: true });
+        }
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred.");
