@@ -13,11 +13,13 @@ const [file, setFile] = useState<File | null>(null)
 const [dragActive, setDragActive] = useState(false)
 const [message, setMessage] = useState<string | null>(null);
 const token = localStorage.getItem("token");
+const bankName = localStorage.getItem("bank_name") || "default_Bank";
 
 // Upload logic
 const uploadFile = async (f: File) => {
         const formData = new FormData();
         formData.append("file", f);
+        formData.append("bank_name", bankName);
 
         try {
             const uploadRes = await fetch("http://127.0.0.1:8000/upload/file/", {
@@ -43,7 +45,8 @@ const uploadFile = async (f: File) => {
             console.log("Upload result:", result);
             return result.result_key;  
         } catch (error) {
-            setMessage("❌ Network error while uploading file.");
+            console.error("Upload error:", error);
+            setMessage(`❌ Upload error: ${error}`);
             return null;
         }
     };
@@ -76,7 +79,7 @@ const uploadFile = async (f: File) => {
     } 
     catch (err) {
     console.error(err);
-    setMessage("Failed to upload file.");
+    setMessage("❌ Prediction failed.");;
     }
 };
 
