@@ -67,6 +67,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <a href="#about" role="menuitem" className="drawerLink">About</a>
           <a href="#help" role="menuitem" className="drawerLink">Help</a>
           <Link to="/schema" role="menuitem" className="drawerLink">Schema Mapping</Link>
+          <a href="#logout" role="menuitem" className="drawerLink">Log Out</a>
         </nav>
       </aside>
 

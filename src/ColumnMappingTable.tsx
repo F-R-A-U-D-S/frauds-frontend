@@ -5,12 +5,13 @@ type ColumnMapping = {
 };
 
 type ColumnMappingTableProps = {
-  onSave: (mapping: ColumnMapping) => void;
+  onSave: (bankName: string, mapping: ColumnMapping) => void;
 };
 
 const requiredColumns = ["timestamp", "merchant", "amount", "mcc", "city", "country", "channel"];
 
 export default function ColumnMappingTable({ onSave }: ColumnMappingTableProps) {
+  const [bankName, setBankName] = useState(""); 
   const [mapping, setMapping] = useState<ColumnMapping>(
     requiredColumns.reduce((acc, col) => ({ ...acc, [col]: "" }), {})
   );
@@ -20,11 +21,22 @@ export default function ColumnMappingTable({ onSave }: ColumnMappingTableProps) 
   };
 
   const handleSave = () => {
-    onSave(mapping);
+    onSave(bankName, mapping);
   };
 
   return (
     <div>
+      {/* Bank Name Field */}
+      <div className="mb-4">
+        <label className="block mb-1 font-semibold">Bank Name</label>
+        <input
+          type="text"
+          value={bankName}
+          onChange={(e) => setBankName(e.target.value)}
+          className="border px-2 py-1 w-full"
+          placeholder="Enter bank name (e.g., RBC, TD, Scotiabank)"
+        />
+      </div>
       <table className="table-auto border-collapse border border-gray-300">
         <thead>
           <tr>
