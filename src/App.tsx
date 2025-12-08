@@ -23,9 +23,9 @@ export default function App() {
       <Route
         path="/admin/*"
         element={
-          <PublicRoute>
+          <PrivateRoute>
             <AdminPage /> 
-          </PublicRoute> 
+          </PrivateRoute> 
         }
       />
 
