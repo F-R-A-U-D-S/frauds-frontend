@@ -111,9 +111,6 @@ const Login: React.FC = () => {
                 <input type="checkbox" /> Remember me
               </label>
             </div>
-            <div>
-              <a href="#" className="forgot-link">Forgot Password?</a>
-            </div>
           </div>
           
 
@@ -122,9 +119,7 @@ const Login: React.FC = () => {
           </button>
         </form>
 
-        <p className="register-text">
-          Don’t have an account? <a href="#">Register</a>
-        </p>
+        
       </div>
     </div>
   );

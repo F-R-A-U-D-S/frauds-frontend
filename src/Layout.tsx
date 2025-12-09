@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { AuthContext } from './auth/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import './Layout.css'
 import './Schema.tsx'
@@ -7,6 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const drawerRef = useRef<HTMLDivElement | null>(null)
+  const {logout} = useContext(AuthContext)
 
   // Close on Escape
   useEffect(() => {
@@ -63,11 +65,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <button className="closeBtn" onClick={close} aria-label="Close menu">
             ×
           </button>
-          <a href="#upload" role="menuitem" className="drawerLink">Upload</a>
-          <a href="#about" role="menuitem" className="drawerLink">About</a>
-          <a href="#help" role="menuitem" className="drawerLink">Help</a>
+          <a href="/upload" role="menuitem" className="drawerLink">Upload</a>
           <Link to="/schema" role="menuitem" className="drawerLink">Schema Mapping</Link>
-          <a href="#logout" role="menuitem" className="drawerLink">Log Out</a>
+          <button
+            role="menuitem"
+            className="drawerLink"
+            onClick={logout}
+            style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+          >
+            Logout
+          </button>
         </nav>
       </aside>
 
