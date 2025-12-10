@@ -12,6 +12,11 @@ export default function DownloadPage() {
   const resultKey = params.get("key");
   const navigate = useNavigate();
 
+  const downloadAndRedirect = async () => {
+    await handleDownloadCsv(resultKey!);
+    navigate("/upload");
+  };
+
   return (
     <Layout>
       <div className="download-container">
@@ -28,19 +33,19 @@ export default function DownloadPage() {
             variant="contained"
             endIcon={<FileDownloadIcon />}
             disabled={!resultKey}
-            onClick={() => handleDownloadCsv(resultKey!)}
+            onClick={downloadAndRedirect}
           >
             Download CSV
           </Button>
         </div>
 
-        <div>
+        {/* <div>
           <Button variant="contained" endIcon={<FileDownloadIcon />}>
             Download PDF
           </Button>
         </div>
 
-                <div style={{ marginTop: "20px" }}>
+        <div style={{ marginTop: "20px" }}>
           <Button
             variant="outlined"
             startIcon={<ArrowBackIcon />}
@@ -48,7 +53,7 @@ export default function DownloadPage() {
           >
             Back to Upload
           </Button>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );
