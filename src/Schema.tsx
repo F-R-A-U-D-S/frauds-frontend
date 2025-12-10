@@ -2,47 +2,56 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ColumnMappingTable from "./ColumnMappingTable";
 import Layout from "./Layout";
+import axiosClient from "./api/axiosClient";
 
 export default function Schema() {
   const [savedMapping, setSavedMapping] = useState<any>(null);
   const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
-
   const handleSaveMapping = async (bankName: string, mapping: any) => {
     try {
       setStatus("Saving...");
 
-      const res = await fetch("http://127.0.0.1:8000/schema/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bank_name: bankName, mapping }),
-        
-      });
+      const res = await axiosClient.post(
+        "/schema/save",
+        {
+          bank_name: bankName,
+          mapping: mapping,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      // save bank name so upload page uses it
       localStorage.setItem("bank_name", bankName);
 
-      const data = await res.json();
       setSavedMapping(mapping);
       setStatus("Mapping saved successfully!");
-      alert(data.message);
-    } 
-    catch (error) {
-        alert("Error saving schema");
-        setStatus("Error saving mapping.");
+      alert(res.data.message || "Schema saved!");
+
+    } catch (error: any) {
+      console.error("Schema save error:", error);
+
+      const msg = error.response?.data?.detail || "Error saving schema.";
+      alert(msg);
+      setStatus("Error saving mapping.");
     }
   };
 
   return (
     <Layout>
       <div className="p-6">
-        {/* BACK BUTTON */}
         <button
           onClick={() => navigate("/upload")}
           className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm"
         >
           ← Back to Home
         </button>
+
         <h1 className="text-2xl font-bold mb-4">Transaction Schema Mapping</h1>
 
         <p className="mb-4 text-gray-700">
@@ -55,11 +64,10 @@ export default function Schema() {
 
         {savedMapping && (
           <pre className="mt-6 p-4 bg-gray-100 border rounded text-sm">
-          {JSON.stringify(savedMapping, null, 2)}
+            {JSON.stringify(savedMapping, null, 2)}
           </pre>
         )}
       </div>
     </Layout>
-    
   );
 }

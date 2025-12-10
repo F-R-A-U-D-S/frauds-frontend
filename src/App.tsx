@@ -1,17 +1,20 @@
-import { Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import PublicRoute from "./auth/PublicRoute";
 import PrivateRoute from "./auth/PrivateRoute";
-import './pages/Login.css'
+import "./pages/Login.css";
 import Login from "./pages/Login";
 import UploadPage from "./pages/UploadPage";
 import DownloadPage from "./pages/DownloadPage";
 import Schema from "./Schema";
-import {AdminPage} from "./features/userManagement/AdminPage";
+import { AdminPage } from "./features/userManagement/AdminPage";
 
 export default function App() {
   return (
     <Routes>
-      {/* Public page */}
+      {/* Default route: if authenticated -> /upload, else -> /login */}
+      <Route path="/" element={<Navigate to="/upload" replace />} />
+
+      {/* Public login page */}
       <Route
         path="/login"
         element={
@@ -20,16 +23,18 @@ export default function App() {
           </PublicRoute>
         }
       />
+
+      {/* Admin */}
       <Route
         path="/admin/*"
         element={
           <PrivateRoute>
-            <AdminPage /> 
-          </PrivateRoute> 
+            <AdminPage />
+          </PrivateRoute>
         }
       />
 
-      {/* upload and download - Auth-protected */}
+      {/* Authenticated user routes */}
       <Route
         path="/upload"
         element={
@@ -57,8 +62,8 @@ export default function App() {
         }
       />
 
-      {/* Default redirect: if user hits "/", then go to login */}
-      <Route path="*" element={<Login />} />
+      {/* Unknown route -> redirect to default */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

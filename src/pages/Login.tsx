@@ -1,20 +1,18 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
-
-
-const API_URL = "http://127.0.0.1:8000/auth";
+import axiosClient from "../api/axiosClient";
 
 const Login: React.FC = () => {
-  const { login, isAuth } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Basic validation
   const validate = (): string | null => {
     if (!username) return "Username is required.";
     if (!password) return "Password is required.";
@@ -22,14 +20,6 @@ const Login: React.FC = () => {
     return null;
   };
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/"); // navigate when isAuth becomes true
-    }
-  }, [isAuth, navigate]);
-
-  
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -41,29 +31,36 @@ const Login: React.FC = () => {
     }
 
     setLoading(true);
+
     try {
-      const res = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      const res = await axiosClient.post("/auth/login", {
+        username,
+        password,
       });
 
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.detail || "Login failed");
+      const data = res.data;
+
+      // Save token + admin flag to context and localStorage
+      login(data.access_token, data.is_admin);
+
+      // *** CRITICAL FIX ***
+      // Ensure axiosClient automatically sends this token on all requests
+      axiosClient.defaults.headers.common["Authorization"] =
+        `Bearer ${data.access_token}`;
+
+      // Redirect based on role
+      if (data.is_admin) {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/upload", { replace: true });
       }
 
-      const data = await res.json();
-      if (data.access_token) {
-        login(data.access_token, data.is_admin);
-        if (data.is_admin) {
-          navigate("/admin", { replace: true });
-        } else {
-          navigate("/upload", { replace: true });
-        }
-      }
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      const msg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Login failed.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -75,18 +72,16 @@ const Login: React.FC = () => {
         <h2 className="title">Sign in</h2>
 
         {error && <div className="error-message">{error}</div>}
-        
+
         <form onSubmit={handleSubmit} className="form">
+
           <label>Username</label>
-          <div>
-            <input
-              type="text"
-              placeholder="Enter Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          
+          <input
+            type="text"
+            placeholder="Enter Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
           <label>Password</label>
           <div className="password-wrapper">
@@ -105,21 +100,14 @@ const Login: React.FC = () => {
             </button>
           </div>
 
-          <div>
-            <div>
-              <label className="remember-container">
-                <input type="checkbox" /> Remember me
-              </label>
-            </div>
-          </div>
-          
+          {/* <label className="remember-container">
+            <input type="checkbox" /> Remember me
+          </label> */}
 
           <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? "Loading..." : "Sign in"} 
+            {loading ? "Loading..." : "Sign in"}
           </button>
         </form>
-
-        
       </div>
     </div>
   );

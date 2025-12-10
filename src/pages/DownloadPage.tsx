@@ -1,7 +1,8 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Layout from "../Layout";
 import Button from "@mui/material/Button";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./DownloadPage.css";
 import handleDownloadCsv from "../api/downloadCSV";
 import ReportPieChart from "../components/reportPieChart";
@@ -9,6 +10,7 @@ import ReportPieChart from "../components/reportPieChart";
 export default function DownloadPage() {
   const [params] = useSearchParams();
   const resultKey = params.get("key");
+  const navigate = useNavigate();
 
   return (
     <Layout>
@@ -35,6 +37,16 @@ export default function DownloadPage() {
         <div>
           <Button variant="contained" endIcon={<FileDownloadIcon />}>
             Download PDF
+          </Button>
+        </div>
+
+                <div style={{ marginTop: "20px" }}>
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate("/upload")}
+          >
+            Back to Upload
           </Button>
         </div>
       </div>

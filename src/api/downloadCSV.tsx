@@ -1,22 +1,20 @@
+import axiosClient from "../api/axiosClient";
+
 export default async function handleDownloadCsv(key: string) {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/predict/download/${key}`, {
-      method: "GET",
+    const response = await axiosClient.get(`/predict/download/${key}`, {
+      responseType: "blob",
       headers: {
-        "Accept": "text/csv",
+        Accept: "text/csv",
       },
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to download CSV");
-    }
-
     // Get blob data
-    const blob = await response.blob();
+    const blob = new Blob([response.data], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
 
-    // Extract filename from backend header if present
-    const disposition = response.headers.get("Content-Disposition");
+    // Extract filename from Content-Disposition header
+    const disposition = response.headers["content-disposition"];
     let filename = "flagged_results.csv";
 
     if (disposition) {
