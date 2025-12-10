@@ -139,7 +139,7 @@ export default function UploadPage() {
         <Layout>
             <main className="centerArea">
                 <section className="content">
-                    <h2 className="subtitle">Please Upload Your Transactions File</h2>
+                    <h2 className="subtitle">Please upload your transactions file</h2>
                     <p className="note">(Note: Must be CSV or Excel)</p>
 
                     <div className="fileInputRow">
