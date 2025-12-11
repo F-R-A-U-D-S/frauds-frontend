@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
 import PublicRoute from "./auth/PublicRoute";
 import PrivateRoute from "./auth/PrivateRoute";
 import "./pages/Login.css";
@@ -7,12 +8,29 @@ import UploadPage from "./pages/UploadPage";
 import DownloadPage from "./pages/DownloadPage";
 import Schema from "./Schema";
 import { AdminPage } from "./features/userManagement/AdminPage";
+import { AuthContext } from "./auth/AuthContext";
+
+
+function AuthRedirect() {
+  const { isAuth, isAdmin } = useContext(AuthContext);
+
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (isAdmin) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return <Navigate to="/upload" replace />;
+}
+
 
 export default function App() {
   return (
     <Routes>
-      {/* Default route: if authenticated -> /upload, else -> /login */}
-      <Route path="/" element={<Navigate to="/upload" replace />} />
+      {/* Smart dynamic redirect */}
+      <Route path="/" element={<AuthRedirect />} />
 
       {/* Public login page */}
       <Route
