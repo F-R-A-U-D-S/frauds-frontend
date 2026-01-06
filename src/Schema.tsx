@@ -4,6 +4,8 @@ import ColumnMappingTable from "./ColumnMappingTable";
 import Layout from "./Layout";
 import axiosClient from "./api/axiosClient";
 
+import "./Schema.css";
+
 export default function Schema() {
   const [savedMapping, setSavedMapping] = useState<any>(null);
   const [status, setStatus] = useState("");
@@ -25,48 +27,55 @@ export default function Schema() {
           },
         }
       );
+      console.log('Save response:', res.data);
 
-      // save bank name so upload page uses it
       localStorage.setItem("bank_name", bankName);
-
       setSavedMapping(mapping);
       setStatus("Mapping saved successfully!");
-      alert(res.data.message || "Schema saved!");
+      // alert(res.data.message || "Schema saved!"); // Removed alert for cleaner UI
 
     } catch (error: any) {
       console.error("Schema save error:", error);
-
       const msg = error.response?.data?.detail || "Error saving schema.";
-      alert(msg);
-      setStatus("Error saving mapping.");
+      // alert(msg);
+      setStatus(`Error: ${msg}`);
     }
   };
 
   return (
     <Layout>
-      <div className="p-6">
-        <button
-          onClick={() => navigate("/upload")}
-          className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm"
-        >
-          ← Back to Home
-        </button>
+      <div className="schema-container">
+        {/* Animated Background Shapes */}
+        <div className="schema-shape schema-shape-1"></div>
+        <div className="schema-shape schema-shape-2"></div>
 
-        <h1 className="text-2xl font-bold mb-4">Transaction Schema Mapping</h1>
+        <div className="schema-card">
+          <div className="schema-header">
+            <div>
+              <h1 className="schema-title">Transaction Schema Mapping</h1>
+              <p className="schema-subtitle">
+                Map your bank’s column names to the required transaction schema.
+              </p>
+            </div>
 
-        <p className="mb-4 text-gray-700">
-          Map your bank’s column names to the required transaction schema.
-        </p>
+            <button
+              onClick={() => navigate("/upload")}
+              className="schema-btn schema-btn-secondary"
+            >
+              ← Back to Upload
+            </button>
+          </div>
 
-        <ColumnMappingTable onSave={handleSaveMapping} />
+          <ColumnMappingTable onSave={handleSaveMapping} />
 
-        {status && <p className="mt-4 text-sm text-blue-700">{status}</p>}
+          {status && <div className="schema-status">{status}</div>}
 
-        {savedMapping && (
-          <pre className="mt-6 p-4 bg-gray-100 border rounded text-sm">
-            {JSON.stringify(savedMapping, null, 2)}
-          </pre>
-        )}
+          {savedMapping && (
+            <div className="schema-code-block">
+              {JSON.stringify(savedMapping, null, 2)}
+            </div>
+          )}
+        </div>
       </div>
     </Layout>
   );
