@@ -1,8 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* --- Main Container as Glass Card --- */
 .download-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px 40px;
+  margin: 40px auto;
+  max-width: 600px;
+
+  /* Deep Dark Glass Theme */
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
+/* --- Typography (Targeting generic h3) --- */
+.download-container h3 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.4;
 
+  /* Gradient Text */
+  background: linear-gradient(to right, #2dd4bf, #cbd5e1);
+  /* Teal to Slate-300 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- MUI Button Override (.download-box) --- */
+.download-box {
+  /* Override MUI default styles */
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  /* Indigo to Violet */
+  color: white !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  /* Remove generic MUI uppercase */
+  padding: 12px 32px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.download-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5) !important;
+  filter: brightness(1.1);
+}
+
+.download-box:disabled {
+  background: rgba(71, 85, 105, 0.5) !important;
+  /* Slate-600 dimmed */
+  color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* --- Pie Chart Container --- */
+.download-container>div:first-child {
+  background: rgba(2, 6, 23, 0.4);
+  border-radius: 50%;
+  /* Circle background for chart if fitting */
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* --- SVG Text Override for Charts --- */
+.download-container text {
+  fill: #e2e8f0 !important;
+  /* Brighten all SVG text (Slate-200) */
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+}

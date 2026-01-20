@@ -1,17 +1,34 @@
-import { Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
 import PublicRoute from "./auth/PublicRoute";
 import PrivateRoute from "./auth/PrivateRoute";
-import './pages/Login.css'
+import "./pages/Login.css";
 import Login from "./pages/Login";
 import UploadPage from "./pages/UploadPage";
 import DownloadPage from "./pages/DownloadPage";
 import Schema from "./Schema";
-import {AdminPage} from "./features/userManagement/AdminPage";
+import { AdminPage } from "./features/userManagement/AdminPage";
+import { AuthContext } from "./auth/AuthContext";
+
+
+function AuthRedirect() {
+  const { isAuth, isAdmin } = useContext(AuthContext);
+
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Navigate to="/upload" replace />;
+}
+
 
 export default function App() {
   return (
     <Routes>
-      {/* Public page */}
+      {/* Smart dynamic redirect */}
+      <Route path="/" element={<AuthRedirect />} />
+
+      {/* Public login page */}
       <Route
         path="/login"
         element={
@@ -20,16 +37,18 @@ export default function App() {
           </PublicRoute>
         }
       />
+
+      {/* Admin */}
       <Route
         path="/admin/*"
         element={
           <PrivateRoute>
-            <AdminPage /> 
-          </PrivateRoute> 
+            <AdminPage />
+          </PrivateRoute>
         }
       />
 
-      {/* upload and download - Auth-protected */}
+      {/* Authenticated user routes */}
       <Route
         path="/upload"
         element={
@@ -57,8 +76,8 @@ export default function App() {
         }
       />
 
-      {/* Default redirect: if user hits "/", then go to login */}
-      <Route path="*" element={<Login />} />
+      {/* Unknown route -> redirect to default */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

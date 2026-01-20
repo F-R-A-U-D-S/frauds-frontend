@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import './pages/Login.css'
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./auth/PrivateRoute";
 import PublicRoute from "./auth/PublicRoute";
 import Schema from "./Schema";
@@ -27,14 +27,14 @@ export default function Home() {
         }
       />
 
-      <Route
+      {/* <Route
         path="/"
         element={
           <PrivateRoute>
             <Dashboard />
           </PrivateRoute>
         }
-      />
+      /> */}
 
       <Route
         path="/schema"

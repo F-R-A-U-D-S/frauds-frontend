@@ -1,8 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 const axiosClient = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-  headers: { "Content-Type": "application/json" }
+  baseURL: API_BASE_URL,
 });
 
 // Attach token to all requests
