@@ -1,20 +1,25 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, /*useNavigate*/ } from "react-router-dom";
 import Layout from "../Layout";
 import Button from "@mui/material/Button";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+//import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./DownloadPage.css";
-import handleDownloadCsv from "../api/downloadCSV";
 import ReportPieChart from "../components/reportPieChart";
+import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
   const resultKey = params.get("key");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
-  const downloadAndRedirect = async () => {
+  const downloadCSVAndRedirect = async () => {
     await handleDownloadCsv(resultKey!);
-    navigate("/upload");
+    //navigate("/upload");
+  };
+
+  const downloadPDFAndRedirect = async () => {
+    await handleDownloadPdf(resultKey!);
+    //navigate("/upload");
   };
 
   return (
@@ -33,9 +38,20 @@ export default function DownloadPage() {
             variant="contained"
             endIcon={<FileDownloadIcon />}
             disabled={!resultKey}
-            onClick={downloadAndRedirect}
+            onClick={downloadCSVAndRedirect}
           >
             Download CSV
+          </Button>
+        </div>
+        <div>
+          <Button
+            className="download-box"
+            variant="contained"
+            endIcon={<FileDownloadIcon />}
+            disabled={!resultKey}
+            onClick={downloadPDFAndRedirect}
+          >
+            Download PDF
           </Button>
         </div>
 
