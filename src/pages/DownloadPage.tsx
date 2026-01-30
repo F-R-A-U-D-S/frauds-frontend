@@ -1,4 +1,4 @@
-import { useSearchParams, /*useNavigate*/ } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Layout from "../Layout";
 import Button from "@mui/material/Button";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -10,16 +10,16 @@ import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 export default function DownloadPage() {
   const [params] = useSearchParams();
   const resultKey = params.get("key");
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const downloadCSVAndRedirect = async () => {
     await handleDownloadCsv(resultKey!);
-    //navigate("/upload");
+    navigate("/upload");
   };
 
   const downloadPDFAndRedirect = async () => {
     await handleDownloadPdf(resultKey!);
-    //navigate("/upload");
+    navigate("/upload");
   };
 
   return (
