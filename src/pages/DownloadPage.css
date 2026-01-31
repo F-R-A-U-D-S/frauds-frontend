@@ -34,7 +34,17 @@
   background: linear-gradient(to right, #2dd4bf, #cbd5e1);
   /* Teal to Slate-300 */
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
 }
 
 /* --- MUI Button Override (.download-box) --- */
@@ -89,4 +99,106 @@
   /* Brighten all SVG text (Slate-200) */
   font-family: 'Inter', sans-serif !important;
   font-weight: 500 !important;
+}
+
+/* --- Secure Export Section --- */
+.secure-export-container {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+
+  /* Nested Glass Card */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.secure-export-container:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+}
+
+.secure-export-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #ec4899);
+  opacity: 0.7;
+}
+
+.secure-export-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #e2e8f0;
+  /* Slate-200 */
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.secure-export-desc {
+  font-size: 13px;
+  color: #94a3b8;
+  /* Slate-400 */
+  margin: 0 0 24px 0;
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 80%;
+}
+
+.secure-export-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.secure-export-btn {
+  /* Gradient Border Effect via background-origin */
+  border: 1px solid rgba(129, 140, 248, 0.3) !important;
+  color: #e2e8f0 !important;
+  font-family: 'Inter', sans-serif !important;
+  text-transform: none !important;
+  border-radius: 12px !important;
+  padding: 8px 24px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  background: rgba(30, 41, 59, 0.4) !important;
+  /* Deep Slate tint */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  min-width: 140px !important;
+  gap: 8px !important;
+}
+
+.secure-export-btn:hover {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(124, 58, 237, 0.2)) !important;
+  border-color: #a5b4fc !important;
+  /* Indigo-300 */
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+
+
+.secure-export-btn:disabled {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.2) !important;
 }
