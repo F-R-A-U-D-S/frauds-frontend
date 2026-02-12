@@ -201,6 +201,9 @@
 .upload-icon {
     font-size: 48px;
     margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #475569;
     /* Slate-600 */
     transition: color 0.3s;
@@ -220,6 +223,62 @@
 
     to {
         transform: translateY(-8px);
+    }
+}
+
+/* --- Composite Processing Icon --- */
+.processing-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.static-file {
+    color: #cbd5e1;
+    /* Slate-300 */
+    z-index: 1;
+    position: absolute;
+    /* Gentle Pulse */
+    animation: filePulse 2s ease-in-out infinite;
+}
+
+.rotating-arrows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #0ea5e9;
+    /* Sky-500 */
+    z-index: 2;
+    animation: spinArrows 2s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
+}
+
+@keyframes spinArrows {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes filePulse {
+
+    0%,
+    100% {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
     }
 }
 

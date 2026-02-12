@@ -1,204 +1,236 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* --- Main Container as Glass Card --- */
+/* --- Full Screen HUD Container --- */
 .download-container {
+  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 30px;
-  padding: 60px 40px;
-  margin: 40px auto;
-  max-width: 600px;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  /* Even Lighter Approach: Slate-600/800 Gradient */
+  background: radial-gradient(circle at center, #475569 0%, #1e293b 100%);
+  /* Slate-600 to Slate-800 */
+  overflow: hidden;
+  padding: 40px;
+  gap: 40px;
+  /* Spacious spacing for HUD elements */
+  color: #ffffff;
+  /* Force white text globally in container */
+}
 
-  /* Deep Dark Glass Theme */
-  background: rgba(2, 6, 23, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+/* --- Cyber Grid Background (Maintained) --- */
+.download-container::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+  /* Slightly larger grid for vastness */
+  transform: perspective(500px) rotateX(60deg);
+  animation: gridMove 30s linear infinite;
+  /* Slower, more majestic move */
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: perspective(500px) rotateX(60deg) translateY(0);
+  }
+
+  100% {
+    transform: perspective(500px) rotateX(60deg) translateY(60px);
+  }
+}
+
+/* --- Holographic Chart Container --- */
+/* This targets the div wrapping the pie chart */
+.download-container>div:nth-child(2) {
+  position: relative;
+  z-index: 10;
+  padding: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+  box-shadow: 0 0 50px rgba(14, 165, 233, 0.2);
+  /* Holographic Glow */
+  border: 1px solid rgba(14, 165, 233, 0.1);
+  animation: floatChart 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatChart {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+/* --- SVG Text Override --- */
+.download-container text {
+  fill: #ffffff !important;
+  /* Force Pure White */
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  /* Shadow for contrast against chart slices */
+}
+
+/* --- Status Text (System Announcement) --- */
+.download-container>div:nth-child(3) {
+  z-index: 10;
   text-align: center;
 }
 
-/* --- Typography (Targeting generic h3) --- */
 .download-container h3 {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  line-height: 1.4;
-
-  /* Gradient Text */
-  background: linear-gradient(to right, #2dd4bf, #cbd5e1);
-  /* Teal to Slate-300 */
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  /* Large, billboard style */
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #ffffff;
+  /* FORCE WHITE */
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
+/* --- Action Buttons (Floating Neon) --- */
 .download-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
-  width: 100%;
-  margin-top: 10px;
+  position: relative;
+  z-index: 10;
+  margin-top: 20px;
 }
 
-/* --- MUI Button Override (.download-box) --- */
 .download-box {
-  /* Override MUI default styles */
-  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
-  /* Indigo to Violet */
-  color: white !important;
+  /* Transparent with Neon Border */
+  background: rgba(2, 6, 23, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid #6366f1 !important;
+  /* Indigo-500 */
+  color: #818cf8 !important;
+  /* Indigo-400 */
   font-family: 'Inter', sans-serif !important;
   font-size: 16px !important;
-  font-weight: 600 !important;
-  text-transform: none !important;
-  /* Remove generic MUI uppercase */
-  padding: 12px 32px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
-  transition: all 0.2s ease !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.download-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5) !important;
-  filter: brightness(1.1);
-}
-
-.download-box:disabled {
-  background: rgba(71, 85, 105, 0.5) !important;
-  /* Slate-600 dimmed */
-  color: rgba(255, 255, 255, 0.3) !important;
-  box-shadow: none !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-}
-
-/* --- Pie Chart Container --- */
-.download-container>div:first-child {
-  background: rgba(2, 6, 23, 0.4);
-  border-radius: 50%;
-  /* Circle background for chart if fitting */
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-/* --- SVG Text Override for Charts --- */
-.download-container text {
-  fill: #e2e8f0 !important;
-  /* Brighten all SVG text (Slate-200) */
-  font-family: 'Inter', sans-serif !important;
   font-weight: 500 !important;
-}
-
-/* --- Secure Export Section --- */
-.secure-export-container {
-  margin-top: 40px;
-  width: 100%;
-  max-width: 480px;
-  padding: 24px;
-
-  /* Nested Glass Card */
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 16px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  padding: 16px 40px !important;
+  border-radius: 4px !important;
+  /* Sharp corners for HUD feel */
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2) !important;
+  transition: all 0.3s ease !important;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
 }
 
-.secure-export-container:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
-}
-
-.secure-export-container::before {
+.download-box::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
+  left: -100%;
   width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #4f46e5, #ec4899);
-  opacity: 0.7;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.download-box:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.6) !important;
+  border-color: #a5b4fc !important;
+  color: #fff !important;
+  transform: translateY(-5px);
+}
+
+.download-box:hover::before {
+  left: 100%;
+}
+
+/* --- Secure Export (Bottom System Overlay) --- */
+.secure-export-container {
+  margin-top: auto;
+  /* Push to bottom if container has height, else just margin */
+  width: 100%;
+  max-width: 800px;
+  padding: 20px 40px;
+
+  /* Sleek Tech Bar */
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(30, 41, 59, 0.8) 20%,
+      rgba(30, 41, 59, 0.8) 80%,
+      transparent 100%);
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  z-index: 10;
+  position: relative;
 }
 
 .secure-export-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 12px;
   color: #e2e8f0;
-  /* Slate-200 */
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  /* Slate-200 (Lighter) */
+  font-size: 14px;
   font-weight: 600;
-  margin: 0 0 8px 0;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .secure-export-desc {
-  font-size: 13px;
-  color: #94a3b8;
-  /* Slate-400 */
-  margin: 0 0 24px 0;
-  font-weight: 400;
-  line-height: 1.5;
-  max-width: 80%;
+  display: none;
+  /* Hide description for cleaner HUD look */
 }
 
 .secure-export-actions {
   display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
+  gap: 15px;
 }
 
 .secure-export-btn {
-  /* Gradient Border Effect via background-origin */
-  border: 1px solid rgba(129, 140, 248, 0.3) !important;
-  color: #e2e8f0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  /* Slate-300 (Lighter) */
   font-family: 'Inter', sans-serif !important;
-  text-transform: none !important;
-  border-radius: 12px !important;
-  padding: 8px 24px !important;
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
-  background: rgba(30, 41, 59, 0.4) !important;
-  /* Deep Slate tint */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  min-width: 140px !important;
-  gap: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s !important;
 }
 
 .secure-export-btn:hover {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(124, 58, 237, 0.2)) !important;
-  border-color: #a5b4fc !important;
-  /* Indigo-300 */
-  color: #fff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
+  color: #cbd5e1 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1) !important;
 }
 
-
-
-.secure-export-btn:disabled {
-  border-color: rgba(255, 255, 255, 0.05) !important;
-  color: rgba(255, 255, 255, 0.2) !important;
+/* --- Decorative HUD Elements --- */
+.download-shape {
+  /* Keeping shapes but making them more subtle/techy */
+  opacity: 0.15;
+  background: radial-gradient(circle, #38bdf8, transparent);
 }
