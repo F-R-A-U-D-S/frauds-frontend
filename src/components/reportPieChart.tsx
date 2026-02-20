@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React from 'react';
+import { BarChart } from '@mui/x-charts';
+import { deepPurple, indigo } from '@mui/material/colors';
+import { Paper } from '@mui/material';
 
 interface ReportPieChartProps {
   keyValue: string | null;
@@ -23,6 +26,7 @@ interface PieDataTypeItem {
   value: number;
   percentage: number;
   total: number;
+  [key:string]: string | number | undefined;
 }
 
 const darkTheme = createTheme({
@@ -53,6 +57,7 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
 
   const statusValueFormatter = (item: { value: number }) => `${item.value} out of ${(item as any).total} total cases (${(item as any).percentage}%)`;
   const typeValueFormatter = (item: { value: number }) => `In ${item.value} out of ${(item as any).total} positive cases (${(item as any).percentage}%)`;
+  const typeBarValueFormatter = (value: number | null) => `${value}`
 
   useEffect(() => {
     if (!keyValue) return;
@@ -103,42 +108,56 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
           <ToggleButton value="status">View by Fraud Status</ToggleButton>
           <ToggleButton value="type">View by Fraud Type</ToggleButton>
         </ToggleButtonGroup>
-        <Box>
+        <Box sx={{height:300}}>
           {view === 'status' ? (
             <PieChart
-              sx={{minHeight: 250, maxHeight: 400}}
+              slotProps={{
+                legend:{
+                  direction: 'horizontal'
+                }
+              }}
+              sx={{height:300}}
               colors={['green', 'red']} 
               series={[
                 {
                   data: statusData,
                   highlightScope: { fade: "global", highlight: "item" },
                   faded: { innerRadius: 10, additionalRadius: -30, color: "gray" },  
-                  //arcLabel: (item) =>
-                  //`${item.label} (${(item as any).percentage.toFixed(2)}%)`, 
+                  arcLabel: (item) =>
+                  `${(item as any).percentage.toFixed(2)}%`, 
                   arcLabelMinAngle: 35,
-                  arcLabelRadius: '40%',
+                  arcLabelRadius: '50%',
                   valueFormatter: statusValueFormatter       
                 },
               ]}
               //hideLegend
             />
           ) : (
+            /*
             <PieChart
-              //sx={{minHeight: 250, maxHeight:400}}
+              sx={{height:300}}
               series={[
                 {
                   data: typeData,
                   highlightScope: { fade: "global", highlight: "item" },
                   faded: { innerRadius: 10, additionalRadius: -30, color: "gray" },  
-                  //arcLabel: (item) =>
-                  //`${item.label} (${(item as any).percentage.toFixed(2)}%)`, 
+                  arcLabel: (item) =>
+                  `${(item as any).percentage.toFixed(2)}%`, 
                   arcLabelMinAngle: 35,
-                  arcLabelRadius: '40%',
+                  arcLabelRadius: '50%',
                   valueFormatter: typeValueFormatter       
                 },
               ]}
               //hideLegend
             />
+            */
+           <BarChart
+            dataset={typeData}
+            yAxis={[{ scaleType: 'band', dataKey: 'label' ,/*width: 400 , position: 'right'*/}]}
+            //xAxis={[{reverse:true}]}
+            series={[{ dataKey: 'value', label: 'Possible Fraud Type Instances: ',color:indigo[500] }]}
+            layout="horizontal"
+           />
           )}
         </Box>
       </Box>
