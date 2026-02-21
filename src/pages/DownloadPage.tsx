@@ -11,6 +11,8 @@ import "./DownloadPage.css";
 import ReportPieChart from "../components/reportPieChart";
 import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 import { requestExport } from "../api/export";
+import ReportTable from "../components/reportTable";
+import Stack from "@mui/material/Stack";
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
@@ -63,9 +65,10 @@ export default function DownloadPage() {
         <div className="download-shape download-shape-2"></div>
 
         {/* 1. Chart Section */}
-        <div>
-          <ReportPieChart keyValue={resultKey!} />
-        </div>
+        <Stack spacing={4}>
+          <ReportPieChart keyValue={resultKey!}/>
+          <ReportTable keyValue={resultKey!} />
+        </Stack>
 
         {/* 2. Status Text */}
         <div>
