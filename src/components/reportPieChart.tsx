@@ -7,8 +7,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React from 'react';
 import { BarChart } from '@mui/x-charts';
-import { deepPurple, indigo } from '@mui/material/colors';
-import { Paper } from '@mui/material';
+import { indigo } from '@mui/material/colors';
+
 
 interface ReportPieChartProps {
   keyValue: string | null;
@@ -56,8 +56,7 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
   };
 
   const statusValueFormatter = (item: { value: number }) => `${item.value} out of ${(item as any).total} total cases (${(item as any).percentage}%)`;
-  const typeValueFormatter = (item: { value: number }) => `In ${item.value} out of ${(item as any).total} positive cases (${(item as any).percentage}%)`;
-  const typeBarValueFormatter = (value: number | null) => `${value}`
+  //const typeValueFormatter = (item: { value: number }) => `In ${item.value} out of ${(item as any).total} positive cases (${(item as any).percentage}%)`;
 
   useEffect(() => {
     if (!keyValue) return;
@@ -153,7 +152,7 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
             */
            <BarChart
             dataset={typeData}
-            yAxis={[{ scaleType: 'band', dataKey: 'label' ,/*width: 400 , position: 'right'*/}]}
+            yAxis={[{ scaleType: 'band', dataKey: 'label' ,width: 400 , /*position: 'right'*/}]}
             //xAxis={[{reverse:true}]}
             series={[{ dataKey: 'value', label: 'Possible Fraud Type Instances: ',color:indigo[500] }]}
             layout="horizontal"
