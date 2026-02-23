@@ -2,12 +2,24 @@ import type { AuthProvider } from "react-admin";
 
 const authProvider: AuthProvider = {
     login: () => Promise.resolve(),
-    logout: () => {
+    logout: async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            try {
+                await fetch("http://localhost:8000/auth/logout", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                console.log("Logout API call successful");
+            } catch (error) {
+                console.error("Logout API call failed", error);
+            }
+        }
         localStorage.removeItem("token");
         localStorage.removeItem("is_admin");
         // Force full reload to clear AuthContext state and redirect
         window.location.assign("/login");
-        return Promise.resolve(); // Should not be reached but keeps TS happy
+        return Promise.resolve();
     },
     checkAuth: () =>
         localStorage.getItem("token") ? Promise.resolve() : Promise.reject({ redirectTo: "/login" }),

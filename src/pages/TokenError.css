@@ -1,0 +1,60 @@
+
+.token-error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0f172a; /* Dark background matching app theme */
+    color: #e2e8f0;
+}
+
+.token-error-card {
+    background-color: #1e293b;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid #334155;
+}
+
+.error-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ef4444; /* Red for error */
+    margin-bottom: 1rem;
+}
+
+.error-description {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #f1f5f9;
+}
+
+.error-detail {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
