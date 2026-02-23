@@ -1,0 +1,68 @@
+/* --- Admin Background & Shapes --- */
+.admin-container {
+    position: relative;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 50%, #0f172a, #020617);
+    overflow: hidden;
+    /* Prevent scrollbars from shapes */
+}
+
+.admin-shape {
+    position: fixed;
+    /* Fixed so they stay in place while scrolling */
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatShape 8s infinite alternate ease-in-out;
+}
+
+.admin-shape-1 {
+    width: 500px;
+    height: 500px;
+    background: #312e81;
+    /* Indigo-900 */
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.admin-shape-2 {
+    width: 400px;
+    height: 400px;
+    background: #115e59;
+    /* Teal-800 */
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 3s;
+}
+
+.admin-shape-3 {
+    width: 300px;
+    height: 300px;
+    background: #831843;
+    /* Pink-900 */
+    top: 30%;
+    left: 40%;
+    opacity: 0.2;
+    animation-delay: 5s;
+}
+
+@keyframes floatShape {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(30px, 40px) scale(1.1);
+    }
+}
+
+/* Ensure React Admin content sits on top */
+.RaLayout-root {
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
+    /* Force transparency so shapes show */
+}

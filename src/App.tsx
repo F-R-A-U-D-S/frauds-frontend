@@ -10,6 +10,7 @@ import SecureDownloadPage from "./pages/SecureDownloadPage";
 import Schema from "./Schema";
 import { AdminPage } from "./features/userManagement/AdminPage";
 import { AuthContext } from "./auth/AuthContext";
+import TokenError from "./pages/TokenError";
 
 
 function AuthRedirect() {
@@ -82,6 +83,9 @@ export default function App() {
         path="/download/secure"
         element={<SecureDownloadPage />}
       />
+
+      <Route path="/download-error" element={<TokenError />} />
+
 
       <Route
         path="/schema"
