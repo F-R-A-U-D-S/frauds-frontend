@@ -57,8 +57,13 @@ const adminDataProvider: DataProvider = {
     return { data: [] };
   },
 
-  deleteMany: async () => {
-    return { data: [] };
+  deleteMany: async (resource: string, params: any) => {
+    await Promise.all(
+      params.ids.map((id: any) =>
+        axiosClient.delete(`/${resource}/${id}`)
+      )
+    );
+    return { data: params.ids };
   },
 };
 
