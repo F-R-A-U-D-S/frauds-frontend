@@ -66,7 +66,7 @@ export default function DownloadPage() {
 
         {/* 1. Chart Section */}
         <Stack spacing={4}>
-          <ReportPieChart keyValue={resultKey!}/>
+          <ReportPieChart keyValue={resultKey!} />
           <ReportTable keyValue={resultKey!} />
         </Stack>
 
@@ -84,7 +84,7 @@ export default function DownloadPage() {
             disabled={!resultKey}
             onClick={downloadCSVAndRedirect}
           >
-            Download CSV
+            Download Raw Data (CSV)
           </Button>
           <Button
             className="download-box"
@@ -93,7 +93,7 @@ export default function DownloadPage() {
             disabled={!resultKey}
             onClick={downloadPDFAndRedirect}
           >
-            Download PDF
+            Download Summary Report (PDF)
           </Button>
         </div>
 
@@ -115,7 +115,7 @@ export default function DownloadPage() {
               onClick={() => handleSecureExport("csv")}
               disabled={exportLoading.csv}
             >
-              {exportLoading.csv ? "Sending..." : "Email CSV"}
+              {exportLoading.csv ? "Sending..." : "Email Raw Data (CSV)"}
             </Button>
             <Button
               className="secure-export-btn"
@@ -124,7 +124,7 @@ export default function DownloadPage() {
               onClick={() => handleSecureExport("pdf")}
               disabled={exportLoading.pdf}
             >
-              {exportLoading.pdf ? "Sending..." : "Email PDF"}
+              {exportLoading.pdf ? "Sending..." : "Email  Summary Report (PDF)"}
             </Button>
           </div>
 
