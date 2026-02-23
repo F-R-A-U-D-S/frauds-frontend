@@ -43,13 +43,11 @@
 	font-weight: 800;
 	/* Bolder */
 	letter-spacing: 1px;
-	/* Dynamic Cyber Gradient */
-	background: linear-gradient(to right, #22d3ee, #6366f1, #d946ef, #22d3ee);
+	background-color: #5d19c4;
 	background-size: 300% auto;
 	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-	animation: shine 5s linear infinite;
 	margin: 0;
 	padding: 0;
 	text-transform: none;
