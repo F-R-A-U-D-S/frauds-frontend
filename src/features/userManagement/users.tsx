@@ -3,10 +3,11 @@ import { BooleanField, BooleanInput, Create, DataTable, DateField, EditButton, L
 export const UserList = () => (
     <List>
         <DataTable>
-            <DataTable.Col source="employee_number"/>
+            <DataTable.Col source="employee_number" />
             <DataTable.Col source="name" />
             <DataTable.Col source="username" />
-            <DataTable.Col source="title"/>
+            <DataTable.Col source="email" />
+            <DataTable.Col source="title" />
             <DataTable.Col label="Admin">
                 <BooleanField source="is_admin" />
             </DataTable.Col>
@@ -27,6 +28,7 @@ export const UserEdit = () => (
         <SimpleForm>
             <TextInput source="name" />
             <TextInput source="username" />
+            <TextInput source="email" />
             <PasswordInput source="password_hash" label="Password" />
             <TextInput source="title" />
             <BooleanInput source="is_admin" />
@@ -40,6 +42,7 @@ export const UserCreate = () => (
             <NumberInput source="employee_number" />
             <TextInput source="name" />
             <TextInput source="username" />
+            <TextInput source="email" />
             <PasswordInput source="password_hash" label="Password" />
             <TextInput source="title" />
         </SimpleForm>
@@ -54,6 +57,7 @@ export const UserShow = () => (
             <NumberField source="employee_number" />
             <TextField source="name" />
             <TextField source="username" />
+            <TextField source="email" />
             <TextField source="title" />
             <BooleanField source="is_admin" />
             <DateField source="created_at" showTime />
