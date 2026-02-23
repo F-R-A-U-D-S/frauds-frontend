@@ -3,10 +3,7 @@ import axiosClient from "../api/axiosClient";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import TableContainer from "@mui/material/TableContainer";
 import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { DateTimeInputProps } from "react-admin";
 
 interface ReportTableProps {
