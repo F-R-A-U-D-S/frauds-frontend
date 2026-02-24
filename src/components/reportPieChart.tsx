@@ -1,7 +1,6 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useEffect, useState } from 'react';
 import axiosClient from "../api/axiosClient";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -29,16 +28,6 @@ interface PieDataTypeItem {
   [key:string]: string | number | undefined;
 }
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#3619a3cc',
-      contrastText: '#FFFFFF'
-    },
-  },
-});
-
 type ViewType = 'status' | 'type';
 
 export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
@@ -56,7 +45,6 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
   };
 
   const statusValueFormatter = (item: { value: number }) => `${item.value} out of ${(item as any).total} total cases (${(item as any).percentage}%)`;
-  //const typeValueFormatter = (item: { value: number }) => `In ${item.value} out of ${(item as any).total} positive cases (${(item as any).percentage}%)`;
 
   useEffect(() => {
     if (!keyValue) return;
@@ -95,7 +83,6 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
   }, [keyValue]);
 
   return (
-    <ThemeProvider theme={darkTheme}>
       <Box>
         <ToggleButtonGroup
           sx={{p:4}}
@@ -129,37 +116,16 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
                   valueFormatter: statusValueFormatter       
                 },
               ]}
-              //hideLegend
             />
           ) : (
-            /*
-            <PieChart
-              sx={{height:300}}
-              series={[
-                {
-                  data: typeData,
-                  highlightScope: { fade: "global", highlight: "item" },
-                  faded: { innerRadius: 10, additionalRadius: -30, color: "gray" },  
-                  arcLabel: (item) =>
-                  `${(item as any).percentage.toFixed(2)}%`, 
-                  arcLabelMinAngle: 35,
-                  arcLabelRadius: '50%',
-                  valueFormatter: typeValueFormatter       
-                },
-              ]}
-              //hideLegend
-            />
-            */
            <BarChart
             dataset={typeData}
-            yAxis={[{ scaleType: 'band', dataKey: 'label' ,width: 400 , /*position: 'right'*/}]}
-            //xAxis={[{reverse:true}]}
+            yAxis={[{ scaleType: 'band', dataKey: 'label' ,width: 400}]}
             series={[{ dataKey: 'value', label: 'Possible Fraud Type Instances: ',color:indigo[500] }]}
             layout="horizontal"
            />
           )}
         </Box>
       </Box>
-    </ThemeProvider>
   );
 }
