@@ -57,10 +57,7 @@ export default function DownloadPage() {
     }
   };
 
-  
-
   return (
-
     <Layout>
       <div className="download-container">
         {/* Decorative HUD Elements */}
@@ -80,13 +77,14 @@ export default function DownloadPage() {
         </Stack>
 
         {/* 3. Main Actions */}
-        <Stack direction="row" spacing={4} className="download-actions">
+        <Stack direction="row" spacing={4}>
           <Button
             className="download-box"
             variant="contained"
             endIcon={<FileDownloadIcon />}
             disabled={!resultKey}
             onClick={downloadCSVAndRedirect}
+            size="large"
           >
             Download Raw Data (CSV)
           </Button>
@@ -96,16 +94,18 @@ export default function DownloadPage() {
             endIcon={<FileDownloadIcon />}
             disabled={!resultKey}
             onClick={downloadPDFAndRedirect}
+            size="large"
           >
             Download Summary Report (PDF)
           </Button>
         </Stack>
 
         {/* 4. Secure Export HUD Bar */}
-        <div className="secure-export-container">
-          <div className="secure-export-header">
-            <SecurityIcon fontSize="small" /> Secure Transfer
-          </div>
+        <Stack direction="row" className="secure-export-container">
+          <Stack className="secure-export-header" direction="row" spacing={1}>
+            <SecurityIcon fontSize="small" /> 
+            <Typography>Secure Transfer</Typography>
+          </Stack>
 
           <Stack direction="row" spacing={2}>
             <Button
@@ -135,9 +135,8 @@ export default function DownloadPage() {
               {exportMessage.text}
             </Alert>
           )}
-        </div>
+        </Stack>
       </div>
     </Layout>
-    
   );
 }
