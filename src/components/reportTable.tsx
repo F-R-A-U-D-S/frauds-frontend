@@ -64,7 +64,12 @@ export default function ReportTable({ keyValue }: ReportTableProps) {
                         columns={columns}
                         initialState={{ pagination: { paginationModel } }}
                         pageSizeOptions={[5, 10]}
-                        sx={{ border: 0 }}
+                        sx={{ 
+                          border: 0,
+                          //"& .MuiDataGrid-cell": {
+                            //color: "text.secondary", 
+                          //}
+                        }}
                         disableRowSelectionOnClick
                     />
                 </Paper>

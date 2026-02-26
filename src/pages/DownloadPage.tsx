@@ -6,24 +6,38 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SecurityIcon from "@mui/icons-material/Security";
 import EmailIcon from "@mui/icons-material/Email";
 import Alert from "@mui/material/Alert";
-//import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./DownloadPage.css";
 import ReportPieChart from "../components/reportPieChart";
 import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 import { requestExport } from "../api/export";
 import ReportTable from "../components/reportTable";
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import React from "react";
+import ReportBarChart from "../components/reportBarChart";
+import Footer from "../components/footer";
+import Header from "../components/header";
+
+type ViewType = 'status' | 'type';
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
   const resultKey = params.get("key");
-  //   const navigate = useNavigate();
   const [exportLoading, setExportLoading] = useState<{ csv: boolean; pdf: boolean }>({
     csv: false,
     pdf: false,
   });
   const [exportMessage, setExportMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [view, setView] = React.useState<ViewType>('status');
+  
+  const handleViewChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newView: ViewType | null,
+  ) => {
+    if (newView !== null) {
+      setView(newView);
+    }
+  };
 
   const downloadCSVAndRedirect = async () => {
     await handleDownloadCsv(resultKey!);
@@ -58,85 +72,98 @@ export default function DownloadPage() {
   };
 
   return (
-    <Layout>
-      <div className="download-container">
-        {/* Decorative HUD Elements */}
-        {/* Note: Shapes can remain or be removed/changed as per new CSS. Keeping them simple. */}
-        <div className="download-shape download-shape-1"></div>
-        <div className="download-shape download-shape-2"></div>
+    <Stack spacing={4}
+      sx={{
+        justifyContent: "center",
+        alignItems: "center",
+      }}    
+    >
+      <Header/>
 
-        {/* 1. Chart Section */}
-        <Stack spacing={4}>
-          <ReportPieChart keyValue={resultKey!} />
-          <ReportTable keyValue={resultKey!} />
+      <ToggleButtonGroup
+        sx={{p:4}}
+        size="medium"
+        value={view}
+        exclusive
+        onChange={handleViewChange}
+      >
+        <ToggleButton value="status">View by Fraud Status</ToggleButton>
+        <ToggleButton value="type">View by Fraud Type</ToggleButton>
+      </ToggleButtonGroup>
+
+      {view === 'status' ? (
+        <ReportPieChart keyValue={resultKey!} />
+      ) : (
+        <ReportBarChart keyValue={resultKey!}/>
+      )}
+
+      <ReportTable keyValue={resultKey!} />
+
+      <Typography variant="h3">REPORT GENERATED</Typography>
+
+      <Stack direction="row" spacing={4}>
+        <Button
+          //className="download-box"
+          variant="contained"
+          endIcon={<FileDownloadIcon />}
+          disabled={!resultKey}
+          onClick={downloadCSVAndRedirect}
+          size="large"
+        >
+          Download Raw Data (CSV)
+        </Button>
+        <Button
+          //className="download-box"
+          variant="contained"
+          endIcon={<FileDownloadIcon />}
+          disabled={!resultKey}
+          onClick={downloadPDFAndRedirect}
+          size="large"
+        >
+          Download Summary Report (PDF)
+        </Button>
+      </Stack>
+
+      <Stack direction="row" spacing={6}>
+        <Stack direction="row" spacing={1}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}  
+        >
+          <SecurityIcon fontSize="small" /> 
+          <Typography>Secure Transfer</Typography>
         </Stack>
 
-        {/* 2. Status Text */}
-        <Stack>
-          <Typography variant="h3">REPORT GENERATED</Typography>
-        </Stack>
-
-        {/* 3. Main Actions */}
-        <Stack direction="row" spacing={4}>
+        <Stack direction="row" spacing={2}>
           <Button
-            className="download-box"
-            variant="contained"
-            endIcon={<FileDownloadIcon />}
-            disabled={!resultKey}
-            onClick={downloadCSVAndRedirect}
-            size="large"
+            variant="text"
+            size="small"
+            startIcon={<EmailIcon />}
+            onClick={() => handleSecureExport("csv")}
+            disabled={exportLoading.csv}
           >
-            Download Raw Data (CSV)
+            {exportLoading.csv ? "Sending..." : "Email Raw Data (CSV)"}
           </Button>
           <Button
-            className="download-box"
-            variant="contained"
-            endIcon={<FileDownloadIcon />}
-            disabled={!resultKey}
-            onClick={downloadPDFAndRedirect}
-            size="large"
+            variant="text"
+            size="small"
+            startIcon={<EmailIcon />}
+            onClick={() => handleSecureExport("pdf")}
+            disabled={exportLoading.pdf}
           >
-            Download Summary Report (PDF)
+            {exportLoading.pdf ? "Sending..." : "Email  Summary Report (PDF)"}
           </Button>
         </Stack>
 
-        {/* 4. Secure Export HUD Bar */}
-        <Stack direction="row" className="secure-export-container">
-          <Stack className="secure-export-header" direction="row" spacing={1}>
-            <SecurityIcon fontSize="small" /> 
-            <Typography>Secure Transfer</Typography>
-          </Stack>
+        {exportMessage && (
+          <Alert severity={exportMessage.type} sx={{ marginTop: "16px", position: "absolute", bottom: "100%", right: "20px" }}>
+            {exportMessage.text}
+          </Alert>
+        )}
+      </Stack>
 
-          <Stack direction="row" spacing={2}>
-            <Button
-              className="secure-export-btn"
-              variant="text"
-              size="small"
-              startIcon={<EmailIcon />}
-              onClick={() => handleSecureExport("csv")}
-              disabled={exportLoading.csv}
-            >
-              {exportLoading.csv ? "Sending..." : "Email Raw Data (CSV)"}
-            </Button>
-            <Button
-              variant="text"
-              className="secure-export-btn"
-              size="small"
-              startIcon={<EmailIcon />}
-              onClick={() => handleSecureExport("pdf")}
-              disabled={exportLoading.pdf}
-            >
-              {exportLoading.pdf ? "Sending..." : "Email  Summary Report (PDF)"}
-            </Button>
-          </Stack>
-
-          {exportMessage && (
-            <Alert severity={exportMessage.type} sx={{ marginTop: "16px", position: "absolute", bottom: "100%", right: "20px" }}>
-              {exportMessage.text}
-            </Alert>
-          )}
-        </Stack>
-      </div>
-    </Layout>
+      <Footer/>
+    </Stack>
   );
 }
