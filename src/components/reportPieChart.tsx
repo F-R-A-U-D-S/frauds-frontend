@@ -6,8 +6,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React from 'react';
 import { BarChart } from '@mui/x-charts';
-import { indigo } from '@mui/material/colors';
-
+import { useTheme } from '@mui/material/styles';
 
 interface ReportPieChartProps {
   keyValue: string | null;
@@ -34,6 +33,8 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
   const [statusData, setStatusData] = useState<PieDataStatusItem[]>([]);
   const [typeData, setTypeData] = useState<PieDataTypeItem[]>([]);
   const [view, setView] = React.useState<ViewType>('status');
+
+  const theme = useTheme();
 
   const handleViewChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -121,7 +122,7 @@ export default function ReportPieChart({ keyValue }: ReportPieChartProps) {
            <BarChart
             dataset={typeData}
             yAxis={[{ scaleType: 'band', dataKey: 'label' ,width: 400}]}
-            series={[{ dataKey: 'value', label: 'Possible Fraud Type Instances: ',color:indigo[500] }]}
+            series={[{ dataKey: 'value', label: 'Possible Fraud Type Instances: ', color: theme.palette.primary.main}]}
             layout="horizontal"
            />
           )}

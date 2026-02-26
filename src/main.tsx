@@ -6,21 +6,21 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 const GlobalTheme = createTheme({
-    colorSchemes: {
-      dark:true,
-    },
-    palette: {
-      primary: {
-        main: '#3619a3cc',
-        //contrastText: '#FFFFFF'
+  colorSchemes: {
+    dark:{
+      palette: {
+        primary: {
+          main: '#6b35cb',
+        },
       },
-    },
-  });
+    }
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AuthProvider>
     <BrowserRouter>
-        <ThemeProvider theme={GlobalTheme} defaultMode="system">
+        <ThemeProvider theme={GlobalTheme} defaultMode="dark">
           <CssBaseline enableColorScheme/>
             <App />
       </ThemeProvider>
