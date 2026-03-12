@@ -13,6 +13,7 @@ import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 import { requestExport } from "../api/export";
 import ReportTable from "../components/reportTable";
 import Stack from "@mui/material/Stack";
+import { Typography } from "@mui/material";
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
@@ -56,7 +57,10 @@ export default function DownloadPage() {
     }
   };
 
+  
+
   return (
+
     <Layout>
       <div className="download-container">
         {/* Decorative HUD Elements */}
@@ -71,12 +75,12 @@ export default function DownloadPage() {
         </Stack>
 
         {/* 2. Status Text */}
-        <div>
-          <h3>REPORT GENERATED</h3>
-        </div>
+        <Stack>
+          <Typography variant="h3">REPORT GENERATED</Typography>
+        </Stack>
 
         {/* 3. Main Actions */}
-        <div className="download-actions">
+        <Stack direction="row" spacing={4} className="download-actions">
           <Button
             className="download-box"
             variant="contained"
@@ -95,21 +99,18 @@ export default function DownloadPage() {
           >
             Download Summary Report (PDF)
           </Button>
-        </div>
+        </Stack>
 
         {/* 4. Secure Export HUD Bar */}
         <div className="secure-export-container">
           <div className="secure-export-header">
             <SecurityIcon fontSize="small" /> Secure Transfer
           </div>
-          {/* Description hidden via CSS */}
-          <p className="secure-export-desc">
-            Request a secure, async export sent to your email.
-          </p>
 
-          <div className="secure-export-actions">
+          <Stack direction="row" spacing={2}>
             <Button
               className="secure-export-btn"
+              variant="text"
               size="small"
               startIcon={<EmailIcon />}
               onClick={() => handleSecureExport("csv")}
@@ -118,6 +119,7 @@ export default function DownloadPage() {
               {exportLoading.csv ? "Sending..." : "Email Raw Data (CSV)"}
             </Button>
             <Button
+              variant="text"
               className="secure-export-btn"
               size="small"
               startIcon={<EmailIcon />}
@@ -126,7 +128,7 @@ export default function DownloadPage() {
             >
               {exportLoading.pdf ? "Sending..." : "Email  Summary Report (PDF)"}
             </Button>
-          </div>
+          </Stack>
 
           {exportMessage && (
             <Alert severity={exportMessage.type} sx={{ marginTop: "16px", position: "absolute", bottom: "100%", right: "20px" }}>
@@ -136,5 +138,6 @@ export default function DownloadPage() {
         </div>
       </div>
     </Layout>
+    
   );
 }
