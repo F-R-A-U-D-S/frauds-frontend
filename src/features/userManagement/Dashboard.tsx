@@ -1,22 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, Typography, Box, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider, CircularProgress } from '@mui/material';
+import { Card, CardContent, CardHeader, Typography, Box, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider, CircularProgress, Button } from '@mui/material';
 import { useGetIdentity } from 'react-admin';
 import PeopleIcon from '@mui/icons-material/People';
 import SecurityIcon from '@mui/icons-material/Security';
 import GradingIcon from '@mui/icons-material/Grading';
+import DownloadIcon from '@mui/icons-material/Download';
 import axiosClient from '../../api/axiosClient';
 
 const Dashboard = () => {
     const { identity } = useGetIdentity();
     const [statsData, setStatsData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [activities, setActivities] = useState<any[]>([]);
+    const [activityOffset, setActivityOffset] = useState(0);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const ACTIVITY_PAGE_SIZE = 5;
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const { data } = await axiosClient.get('/admin/stats');
+                const { data } = await axiosClient.get(`/admin/stats?activity_limit=${ACTIVITY_PAGE_SIZE}&activity_offset=0`);
                 console.log("Admin Stats Data:", data);
                 setStatsData(data);
+                setActivities(data.recent_activity || []);
+                setActivityOffset(ACTIVITY_PAGE_SIZE);
+                if ((data.recent_activity?.length || 0) < ACTIVITY_PAGE_SIZE) {
+                    setHasMore(false);
+                }
             } catch (error) {
                 console.error("Failed to fetch admin stats", error);
             } finally {
@@ -26,6 +37,49 @@ const Dashboard = () => {
 
         fetchStats();
     }, []);
+
+    const handleSeeMore = async () => {
+        if (loadingMore || !hasMore) return;
+        
+        setLoadingMore(true);
+        try {
+            const { data } = await axiosClient.get(`/admin/stats?activity_limit=${ACTIVITY_PAGE_SIZE}&activity_offset=${activityOffset}`);
+            const newActivities = data.recent_activity || [];
+            
+            if (newActivities.length > 0) {
+                setActivities(prev => [...prev, ...newActivities]);
+                setActivityOffset(prev => prev + ACTIVITY_PAGE_SIZE);
+            }
+            
+            if (newActivities.length < ACTIVITY_PAGE_SIZE) {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error("Failed to fetch more activities", error);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
+
+    const handleDownloadCSV = async () => {
+        try {
+            // Using axios to handle auth headers automatically
+            const response = await axiosClient.get('/admin/activities/download', {
+                responseType: 'blob'
+            });
+            
+            // Create a link and trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'recent_activity.csv');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error("Failed to download CSV", error);
+        }
+    };
 
     if (loading) {
         return (
@@ -72,11 +126,28 @@ const Dashboard = () => {
             {/* Recent Activity */}
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr' }, gap: 3 }}>
                 <Card sx={{ height: '100%' }}>
-                    <CardHeader title="Recent Activity" titleTypographyProps={{ variant: 'h6', fontWeight: 700 }} />
+                    <CardHeader 
+                        title="Recent Activity" 
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 700 }}
+                        action={
+                            <Button 
+                                onClick={handleDownloadCSV} 
+                                startIcon={<DownloadIcon />}
+                                sx={{ 
+                                    color: '#818cf8',
+                                    fontWeight: 600,
+                                    textTransform: 'none',
+                                    '&:hover': { backgroundColor: 'rgba(129, 140, 248, 0.1)' }
+                                }}
+                            >
+                                Export CSV
+                            </Button>
+                        }
+                    />
                     <Divider sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />
                     <CardContent sx={{ p: 0 }}>
                         <List>
-                            {statsData?.recent_activity?.map((activity: any, index: number) => (
+                            {activities.map((activity: any, index: number) => (
                                 <div key={index}>
                                     <ListItem alignItems="flex-start" sx={{ py: 2 }}>
                                         <ListItemAvatar>
@@ -94,10 +165,28 @@ const Dashboard = () => {
                                             }
                                         />
                                     </ListItem>
-                                    {index < (statsData.recent_activity.length - 1) && <Divider variant="inset" component="li" sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />}
+                                    {index < (activities.length - 1) && <Divider variant="inset" component="li" sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />}
                                 </div>
                             ))}
                         </List>
+                        {hasMore && (
+                            <Box sx={{ p: 2, textAlign: 'center' }}>
+                                <Typography 
+                                    variant="button" 
+                                    component="div"
+                                    onClick={handleSeeMore}
+                                    sx={{ 
+                                        cursor: 'pointer', 
+                                        color: '#818cf8', 
+                                        fontWeight: 600,
+                                        '&:hover': { color: '#c084fc', textDecoration: 'underline' }
+                                    }}
+                                >
+                                    {loadingMore ? <CircularProgress size={20} sx={{ mr: 1 }} /> : null}
+                                    {loadingMore ? 'Loading...' : 'See more activity'}
+                                </Typography>
+                            </Box>
+                        )}
                     </CardContent>
                 </Card>
 
