@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-
-
+import axiosClient from "../api/axiosClient";
 interface AuthContextType {
   isAuth: boolean;
   loading?: boolean;
@@ -44,12 +43,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAdmin(isAdmin);
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("is_admin");
-    setIsAuth(false);
-    setIsAdmin(false);
-    window.location.href = "/login";
+  const logout = async () => {
+    try {
+      if (localStorage.getItem("token")) {
+        await axiosClient.post("/auth/logout");
+      }
+    } catch (error) {
+      console.error("Logout API failed", error);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("is_admin");
+      setIsAuth(false);
+      setIsAdmin(false);
+      window.location.href = "/login";
+    }
   };
 
   if (isAuth === null) return <div>Loading...</div>;
