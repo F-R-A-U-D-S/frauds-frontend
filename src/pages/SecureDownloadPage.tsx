@@ -51,6 +51,10 @@ export default function SecureDownloadPage() {
                 if (disposition) {
                     const match = disposition.match(/filename="?([^"]+)"?/);
                     if (match) filename = match[1];
+                } else if (contentType?.includes("application/pdf")) {
+                    filename = "secure_export.pdf";
+                } else if (contentType?.includes("text/csv")) {
+                    filename = "secure_export.csv";
                 }
 
                 const link = document.createElement("a");
