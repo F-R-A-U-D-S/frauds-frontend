@@ -13,7 +13,7 @@ import { handleDownloadCsv, handleDownloadPdf } from "../api/downloadWrappers";
 import { requestExport } from "../api/export";
 import ReportTable from "../components/reportTable";
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
+import { Typography, CircularProgress } from "@mui/material";
 
 export default function DownloadPage() {
   const [params] = useSearchParams();
@@ -25,12 +25,27 @@ export default function DownloadPage() {
   });
   const [exportMessage, setExportMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
+  const [isDownloadingCSV, setIsDownloadingCSV] = useState(false);
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
+
   const downloadCSVAndRedirect = async () => {
-    await handleDownloadCsv(resultKey!);
+    if (isDownloadingCSV) return;
+    setIsDownloadingCSV(true);
+    try {
+      await handleDownloadCsv(resultKey!);
+    } finally {
+      setIsDownloadingCSV(false);
+    }
   };
 
   const downloadPDFAndRedirect = async () => {
-    await handleDownloadPdf(resultKey!);
+    if (isDownloadingPDF) return;
+    setIsDownloadingPDF(true);
+    try {
+      await handleDownloadPdf(resultKey!);
+    } finally {
+      setIsDownloadingPDF(false);
+    }
   };
 
   const handleSecureExport = async (format: "csv" | "pdf") => {
@@ -84,20 +99,20 @@ export default function DownloadPage() {
           <Button
             className="download-box"
             variant="contained"
-            endIcon={<FileDownloadIcon />}
-            disabled={!resultKey}
+            endIcon={isDownloadingCSV ? <CircularProgress size={20} color="inherit" /> : <FileDownloadIcon />}
+            disabled={!resultKey || isDownloadingCSV}
             onClick={downloadCSVAndRedirect}
           >
-            Download Raw Data (CSV)
+            {isDownloadingCSV ? "Downloading..." : "Download Raw Data (CSV)"}
           </Button>
           <Button
             className="download-box"
             variant="contained"
-            endIcon={<FileDownloadIcon />}
-            disabled={!resultKey}
+            endIcon={isDownloadingPDF ? <CircularProgress size={20} color="inherit" /> : <FileDownloadIcon />}
+            disabled={!resultKey || isDownloadingPDF}
             onClick={downloadPDFAndRedirect}
           >
-            Download Summary Report (PDF)
+            {isDownloadingPDF ? "Downloading..." : "Download Summary Report (PDF)"}
           </Button>
         </Stack>
 
@@ -112,7 +127,7 @@ export default function DownloadPage() {
               className="secure-export-btn"
               variant="text"
               size="small"
-              startIcon={<EmailIcon />}
+              startIcon={exportLoading.csv ? <CircularProgress size={16} color="inherit" /> : <EmailIcon />}
               onClick={() => handleSecureExport("csv")}
               disabled={exportLoading.csv}
             >
@@ -122,11 +137,11 @@ export default function DownloadPage() {
               variant="text"
               className="secure-export-btn"
               size="small"
-              startIcon={<EmailIcon />}
+              startIcon={exportLoading.pdf ? <CircularProgress size={16} color="inherit" /> : <EmailIcon />}
               onClick={() => handleSecureExport("pdf")}
               disabled={exportLoading.pdf}
             >
-              {exportLoading.pdf ? "Sending..." : "Email  Summary Report (PDF)"}
+              {exportLoading.pdf ? "Sending..." : "Email Summary Report (PDF)"}
             </Button>
           </Stack>
 

@@ -15,6 +15,7 @@ const Dashboard = () => {
     const [activityOffset, setActivityOffset] = useState(0);
     const [loadingMore, setLoadingMore] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [isDownloading, setIsDownloading] = useState(false);
     const ACTIVITY_PAGE_SIZE = 5;
 
     useEffect(() => {
@@ -62,6 +63,8 @@ const Dashboard = () => {
     };
 
     const handleDownloadCSV = async () => {
+        if (isDownloading) return;
+        setIsDownloading(true);
         try {
             // Using axios to handle auth headers automatically
             const response = await axiosClient.get('/admin/activities/download', {
@@ -78,6 +81,8 @@ const Dashboard = () => {
             link.remove();
         } catch (error) {
             console.error("Failed to download CSV", error);
+        } finally {
+            setIsDownloading(false);
         }
     };
 
@@ -132,15 +137,17 @@ const Dashboard = () => {
                         action={
                             <Button 
                                 onClick={handleDownloadCSV} 
-                                startIcon={<DownloadIcon />}
+                                disabled={isDownloading}
+                                startIcon={isDownloading ? <CircularProgress size={18} color="inherit" /> : <DownloadIcon />}
                                 sx={{ 
                                     color: '#818cf8',
                                     fontWeight: 600,
                                     textTransform: 'none',
-                                    '&:hover': { backgroundColor: 'rgba(129, 140, 248, 0.1)' }
+                                    '&:hover': { backgroundColor: 'rgba(129, 140, 248, 0.1)' },
+                                    '&.Mui-disabled': { color: 'rgba(129, 140, 248, 0.5)' }
                                 }}
                             >
-                                Export CSV
+                                {isDownloading ? 'Exporting...' : 'Export CSV'}
                             </Button>
                         }
                     />
